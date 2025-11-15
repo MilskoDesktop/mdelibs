@@ -1,20 +1,18 @@
 cmake_minimum_required(VERSION 3.25)
 project(
 	mdelibs
-	VERSION 0.0
-	DESCRIPTION "MDE Libraries"
 )
 
 file(
 	GLOB
-	SOURCES
+	MDELib_SRC
 	src/*.c
 )
 
 add_library(
 	MDELib
 	SHARED
-	${SOURCES}
+	${MDELib_SRC}
 )
 
 target_include_directories(
