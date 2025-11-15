@@ -1,7 +1,6 @@
 cmake_minimum_required(VERSION 3.25)
 project(
 	mdelibs
-	LANGUAGES C
 	VERSION 0.0
 	DESCRIPTION "MDE Libraries"
 )
@@ -13,20 +12,20 @@ file(
 )
 
 add_library(
-	MDE
+	MDELib
 	SHARED
 	${SOURCES}
 )
 
 target_include_directories(
-	MDE
+	MDELib
 	PUBLIC
 	include
 )
 
 include(GNUInstallDirs)
 install(
-	TARGETS MDE
+	TARGETS MDELib
 	LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
 	ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
 )
