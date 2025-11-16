@@ -19,6 +19,8 @@ void MDEListUsers(void(*call)(const char* name, void* user), void* user){
 		if(pwd->pw_dir == NULL || pwd->pw_shell == NULL) continue;
 		if(pwd->pw_name[0] == '_') continue;
 
+		if(strlen(pwd->pw_dir) >= 5 && memcmp(pwd->pw_dir, "/var/", 5) == 0) continue;
+
 		shell = strrchr(pwd->pw_shell, '/');
 		if(shell == NULL) break;
 		shell++;
@@ -29,9 +31,9 @@ void MDEListUsers(void(*call)(const char* name, void* user), void* user){
 		if(dir == NULL) break;
 		dir++;
 
-		if(strcmp(dir, pwd->pw_name) == 0){
-			call(pwd->pw_name, user);
-		}
+		if(strcmp(dir, pwd->pw_name) != 0) continue;
+
+		call(pwd->pw_name, user);
 	}
 	endpwent();
 }
