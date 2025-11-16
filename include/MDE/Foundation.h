@@ -5,5 +5,6 @@
 
 #include <MDE/File.h>
 #include <MDE/String.h>
+#include <MDE/Users.h>
 
 #endif
