@@ -1,0 +1,32 @@
+#include <MDE/Users.h>
+#include <MDE/String.h>
+
+#include <pwd.h>
+
+void MDEListUsers(void(*call)(const char* name, void* user), void* user){
+	struct passwd* pwd;
+
+	setpwent();
+	while((pwd = getpwent()) != NULL){
+		char* dir;
+
+		/* this is BAD check. and i cannot do anything about it
+		 *
+		 * i appreciate the insanity
+		 */
+
+		if(pwd->pw_dir == NULL) continue;
+		if(pwd->pw_name[0] == '_') continue;
+		if(strlen(pwd->pw_dir) >= 5 && memcmp(pwd->pw_dir, "/var/", 5) == 0) continue;
+		if(strlen(pwd->pw_dir) >= 5 && memcmp(pwd->pw_dir, "/usr/", 5) == 0) continue;
+		
+		dir = strrchr(pwd->pw_dir, '/');
+		if(dir == NULL) break;
+		dir++;
+
+		if(strcmp(dir, pwd->pw_name) == 0){
+			call(pwd->pw_name, user);
+		}
+	}
+	endpwent();
+}
