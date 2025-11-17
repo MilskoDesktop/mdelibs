@@ -5,12 +5,12 @@
 #include <dirent.h>
 #include <sys/stat.h>
 
-void MDEDirectoryScan(const char* path, void(*call)(const char* name, int dir, void* user), void* user){
+void MDEDirectoryScan(const char* path, void (*call)(const char* name, int dir, void* user), void* user) {
 	DIR* dir = opendir(path);
-	if(dir != NULL){
+	if(dir != NULL) {
 		struct dirent* d;
-		while((d = readdir(dir)) != NULL){
-			char* p;
+		while((d = readdir(dir)) != NULL) {
+			char*	    p;
 			struct stat s;
 			if(strcmp(d->d_name, "..") == 0 || strcmp(d->d_name, ".") == 0) continue;
 
@@ -19,10 +19,10 @@ void MDEDirectoryScan(const char* path, void(*call)(const char* name, int dir, v
 			if(path[strlen(path) - 1] != '/') strcat(p, "/");
 			strcat(p, d->d_name);
 
-			if(stat(p, &s) == 0){
+			if(stat(p, &s) == 0) {
 				call(p, S_ISDIR(s.st_mode) ? 1 : 0, user);
 			}
-			
+
 			free(p);
 		}
 		closedir(dir);

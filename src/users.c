@@ -3,11 +3,11 @@
 
 #include <pwd.h>
 
-void MDEUsersList(void(*call)(const char* name, void* user), void* user){
+void MDEUsersList(void (*call)(const char* name, void* user), void* user) {
 	struct passwd* pwd;
 
 	setpwent();
-	while((pwd = getpwent()) != NULL){
+	while((pwd = getpwent()) != NULL) {
 		char* dir;
 		char* shell;
 
@@ -26,7 +26,7 @@ void MDEUsersList(void(*call)(const char* name, void* user), void* user){
 		shell++;
 
 		if(strcmp(shell, "nologin") == 0) continue;
-		
+
 		dir = strrchr(pwd->pw_dir, '/');
 		if(dir == NULL) break;
 		dir++;
