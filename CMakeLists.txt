@@ -51,10 +51,10 @@ if(ALSA_FOUND)
 		PRIVATE
 		${ALSA_LIBRARIES} pthread
 	)
-	target_sources(
+	target_compile_definitions(
 		MDEAudio
 		PRIVATE
-		src/audio/driver/alsa.c
+		USE_ALSA
 	)
 endif()
 
