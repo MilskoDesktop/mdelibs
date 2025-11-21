@@ -1,5 +1,6 @@
 #include <MDE/Audio/Audio.h>
 
+#ifdef USE_ALSA
 #include <pthread.h>
 
 #include <alsa/asoundlib.h>
@@ -121,3 +122,4 @@ void MDEAudioStart(void* handle){
 
 	pthread_create(&drv->thread, NULL, thread_routine, handle);
 }
+#endif
