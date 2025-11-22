@@ -9,9 +9,9 @@ typedef struct driver {
 	int frames;
 
 	MDEAudioHandler handler;
-	void* user;
+	void*		user;
 
-	int quit;
-	pthread_t thread;
+	int		quit;
+	pthread_t	thread;
 	pthread_mutex_t mutex;
 } driver_t;

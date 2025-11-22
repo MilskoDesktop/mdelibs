@@ -1,16 +1,16 @@
-static void* thread_routine(void* arg){
+static void* thread_routine(void* arg) {
 	driver_t* drv = arg;
-	void* data;
+	void*	  data;
 
 	data = malloc(drv->frames * 2 * 2);
 
-	while(1){
+	while(1) {
 		drv->handler(drv, drv->user, data, drv->frames);
 
 		drv_write(drv, data, drv->frames);
 
 		pthread_mutex_lock(&drv->mutex);
-		if(drv->quit){
+		if(drv->quit) {
 			pthread_mutex_unlock(&drv->mutex);
 			break;
 		}
@@ -22,19 +22,19 @@ static void* thread_routine(void* arg){
 	return NULL;
 }
 
-void* MDEAudioOpen(MDEAudioHandler handler, void* user){
-	int rate = MDEAudioRate;
-	driver_t* drv = malloc(sizeof(*drv));
+void* MDEAudioOpen(MDEAudioHandler handler, void* user) {
+	int	  rate = MDEAudioRate;
+	driver_t* drv  = malloc(sizeof(*drv));
 	memset(drv, 0, sizeof(*drv));
 
-	drv->quit = 0;
+	drv->quit    = 0;
 	drv->handler = handler;
-	drv->user = user;
-	drv->init = 0;
+	drv->user    = user;
+	drv->init    = 0;
 
 	pthread_mutex_init(&drv->mutex, NULL);
 
-	if(!(drv->init = drv_open(drv))){
+	if(!(drv->init = drv_open(drv))) {
 		MDEAudioClose(drv);
 		return NULL;
 	}
@@ -42,11 +42,11 @@ void* MDEAudioOpen(MDEAudioHandler handler, void* user){
 	return drv;
 }
 
-void MDEAudioClose(void* handle){
+void MDEAudioClose(void* handle) {
 	driver_t* drv = handle;
-	void* ret;
+	void*	  ret;
 
-	if(drv->init){
+	if(drv->init) {
 		pthread_mutex_lock(&drv->mutex);
 		drv->quit = 1;
 		pthread_mutex_unlock(&drv->mutex);
@@ -60,7 +60,7 @@ void MDEAudioClose(void* handle){
 	free(drv);
 }
 
-void MDEAudioStart(void* handle){
+void MDEAudioStart(void* handle) {
 	driver_t* drv = handle;
 
 	pthread_create(&drv->thread, NULL, thread_routine, handle);

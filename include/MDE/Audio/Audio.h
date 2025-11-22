@@ -13,7 +13,7 @@ extern "C" {
 #define MDEAudioRate 48000
 
 /* S16, stereo. frames*2*2 == bytes */
-typedef void(*MDEAudioHandler)(void* handle, void* user, void* data, int frames);
+typedef void (*MDEAudioHandler)(void* handle, void* user, void* data, int frames);
 
 /* driver functions */
 void* MDEAudioOpen(MDEAudioHandler handler, void* user);
