@@ -10,7 +10,7 @@ MwWidget MDEAboutDialog(MwWidget handle, const char* appname, const char* versio
 	MwWidget    w, p, l, l2, l3, ok;
 	MwSizeHints sh;
 	int	    x = MwDEFAULT, y = MwDEFAULT;
-	const int   iw = 64 + 32;
+	const int   iw = 128;
 	const int   bh = 24, bw = bh * 3;
 	int	    ww = 320, wh = 5 + iw + 5 + (16 + 5) * 3 + 10 + bh + 5;
 	char	    buf[512];
