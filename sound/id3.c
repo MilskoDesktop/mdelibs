@@ -86,8 +86,9 @@ char* MDEID3GetString(const char* path, const char* name){
 	size_t sz;
 	unsigned char* d = MDEID3GetTag(path, name, &sz);
 	char* s;
+	int i;
 	if(d == NULL) return NULL;
-	if(d[0] == 1 || d[0] == 2){
+	if(d[0] == 2){
 		free(d);
 		return NULL;
 	}
@@ -95,6 +96,28 @@ char* MDEID3GetString(const char* path, const char* name){
 	s = malloc(sz - 1 + 1);
 	memcpy(s, d + 1, sz - 1);
 	s[sz - 1] = 0;
+	if(d[0] == 1){
+		unsigned short bom = *(unsigned short*)&s[0];
+
+		for(i = 1; i < sz - 1; i++){
+			if(bom == 0xfffe){
+				unsigned short n = 0;
+				n = n << 8;
+				n = n | s[2 * i + 0];
+				n = n << 8;
+				n = n | s[2 * i + 1];
+				s[i - 1] = n & 0x7f;
+			}else if(bom == 0xfeff){
+				unsigned short n = 0;
+				n = n << 8;
+				n = n | s[2 * i + 1];
+				n = n << 8;
+				n = n | s[2 * i + 0];
+				s[i - 1] = n & 0x7f;
+			}
+		}
+		s[i - 1] = 0;
+	}
 
 	free(d);
 
