@@ -61,6 +61,6 @@ void MDEThreadDestroy(MDEThread thread) {
 
 void MDEThreadJoin(MDEThread thread) {
 	void* p;
-	pthread_join(thread, &p);
+	pthread_join(*(pthread_t*)thread, &p);
 }
 #endif
