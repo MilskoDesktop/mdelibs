@@ -2,14 +2,16 @@
 #include <MDE/Core/String.h>
 
 #ifdef _WIN32
-void MDEUsersList(void (*call)(const char* name, void* user), void* user) {
-	/* wow */
-	call("Administrator", user);
-}
+#include <windows.h>
 #else
 #include <pwd.h>
+#endif
 
 void MDEUsersList(void (*call)(const char* name, void* user), void* user) {
+#ifdef _WIN32
+	/* wow */
+	call("Administrator", user);
+#else
 	struct passwd* pwd;
 
 	setpwent();
@@ -42,5 +44,18 @@ void MDEUsersList(void (*call)(const char* name, void* user), void* user) {
 		call(pwd->pw_name, user);
 	}
 	endpwent();
-}
 #endif
+}
+
+char* MDEUsersGetUsername(void) {
+#ifdef _WIN32
+	char  username[4096];
+	DWORD n = 4096;
+	GetUserName(username, &n);
+
+	return MDEStringDuplicate(username);
+#else
+	struct passwd* pwd = getpwuid(getuid());
+	return MDEStringDuplicate(pwd->pw_name);
+#endif
+}

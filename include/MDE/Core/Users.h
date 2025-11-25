@@ -9,6 +9,8 @@ extern "C" {
 
 void MDEUsersList(void (*call)(const char* name, void* user), void* user);
 
+char* MDEUsersGetUsername(void);
+
 #ifdef __cplusplus
 }
 #endif

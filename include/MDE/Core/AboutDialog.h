@@ -3,11 +3,11 @@
 
 #include <MDE/MachDep.h>
 
+#include <Mw/Milsko.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-#include <Mw/Milsko.h>
 
 MwWidget MDEAboutDialog(MwWidget handle, const char* appname, const char* version, MwLLPixmap pixmap);
 
