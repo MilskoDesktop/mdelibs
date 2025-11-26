@@ -15,6 +15,7 @@ MDESound MDESoundOpen(const char* path) {
 
 	TRY_DRIVER(MP3);
 	TRY_DRIVER(Vorbis);
+	TRY_DRIVER(FLAC);
 
 	if(sound->context == NULL) {
 		free(sound);

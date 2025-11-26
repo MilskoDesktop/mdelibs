@@ -46,6 +46,7 @@ struct _MDESound {
 
 extern MDESoundDriver MDESoundDriverMP3;
 extern MDESoundDriver MDESoundDriverVorbis;
+extern MDESoundDriver MDESoundDriverFLAC;
 
 MDESound MDESoundOpen(const char* path);
 
