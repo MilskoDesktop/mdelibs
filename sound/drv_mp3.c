@@ -7,6 +7,16 @@
 static MDESoundContext mp3_open(const char* path) {
 	MDESoundContext ctx = malloc(sizeof(*ctx));
 	char*		s;
+	unsigned char	sig[3];
+	FILE*		f = fopen(path, "rb");
+	fread(sig, 3, 1, f);
+	if(memcmp(sig, "ID3", 3) != 0 && memcmp(sig, "\xff\xfb", 2) != 0 && memcmp(sig, "\xff\xf3", 2) != 0 && memcmp(sig, "\xff\xf2", 2) != 0) {
+		free(ctx);
+		fclose(f);
+		return NULL;
+	}
+
+	fclose(f);
 	memset(ctx, 0, sizeof(*ctx));
 
 	ctx->title  = MDEID3GetString(path, "TIT2");
