@@ -1,6 +1,8 @@
 #include <MDE/Sound/ID3.h>
 #include <MDE/Core/String.h>
 
+#include <Mw/Milsko.h>
+
 static unsigned int syncsafe(FILE* f) {
 	unsigned char d[4];
 	unsigned int  r = 0;
@@ -98,25 +100,34 @@ char* MDEID3GetString(const char* path, const char* name) {
 	s[sz - 1] = 0;
 	if(d[0] == 1) {
 		unsigned short bom = *(unsigned short*)&s[0];
+		int incr = 0;
 
-		for(i = 1; i < sz - 1; i++) {
+		for(i = 1; i < (sz) / 2; i++) {
 			if(bom == 0xfffe) {
 				unsigned short n = 0;
+				char b[4];
+				int l;
 				n		 = n << 8;
 				n		 = n | s[2 * i + 0];
 				n		 = n << 8;
 				n		 = n | s[2 * i + 1];
-				s[i - 1]	 = n & 0x7f;
+				l = MwUTF32ToUTF8(n, b);
+				memcpy(s + incr, b, l);
+				incr += l;
 			} else if(bom == 0xfeff) {
 				unsigned short n = 0;
+				char b[4];
+				int l;
 				n		 = n << 8;
 				n		 = n | s[2 * i + 1];
 				n		 = n << 8;
 				n		 = n | s[2 * i + 0];
-				s[i - 1]	 = n & 0x7f;
+				l = MwUTF32ToUTF8(n, b);
+				memcpy(s + incr, b, l);
+				incr += l;
 			}
 		}
-		s[i - 1] = 0;
+		s[incr] = 0;
 	}
 
 	free(d);
