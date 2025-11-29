@@ -48,5 +48,10 @@ macro(check_backend uppername name)
 	endif()
 endmacro()
 
-check_backend(ALSA alsa)
-check_backend(AO ao)
+#check_backend(ALSA alsa)
+#check_backend(AO ao)
+target_compile_definitions(
+	MDEAudio
+	PRIVATE
+	USE_MA
+)
